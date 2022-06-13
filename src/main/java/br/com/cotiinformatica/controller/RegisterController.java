@@ -41,7 +41,10 @@ public class RegisterController {
 				throw new Exception("O email " + email + " já está cadastrado, por favor tente outro.");
 			}
 
-			Usuario usuario = new Usuario(null, nome, email, senha);
+			Usuario usuario = new Usuario();
+			usuario.setNome(nome);
+			usuario.setEmail(email);
+			usuario.setSenha(senha);
 
 			usuarioRepository.inserir(usuario);
 

@@ -18,9 +18,7 @@
 
 		<div class="text-center">
 		
-			<img src="https://www.cotiinformatica.com.br/imagens/logo-coti-informatica.png"/>
-			<br/>
-		
+					
 			<h5>Acesso ao Sistema</h5>
 			<p>Informe suas credenciais para acessar o sistema.</p>
 		</div>
