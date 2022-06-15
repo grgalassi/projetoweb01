@@ -18,7 +18,7 @@ import br.com.cotiinformatica.repositories.CompromissoRepository;
 public class CompromissoCadastroController {
 
 	@RequestMapping(value = "/cadastrar-compromissos")
-	public ModelAndView Compromisso() {
+	public ModelAndView cadastro() {
 
 		ModelAndView modelAndView = new ModelAndView("agenda/cadastro");
 		return modelAndView;

@@ -2,7 +2,11 @@ package br.com.cotiinformatica.repositories;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
 
 import br.com.cotiinformatica.entities.Compromisso;
 import br.com.cotiinformatica.factories.ConnectionFactory;
@@ -25,6 +29,105 @@ public class CompromissoRepository {
 		statement.execute();
 
 		connection.close();
+
+	}
+
+	public void atualizar(Compromisso compromisso) throws Exception {
+
+		Connection connection = ConnectionFactory.getConnection();
+
+		PreparedStatement statement = connection.prepareStatement(
+				"update compromisso set nome=?, data=?, hora=?, descricao=?, prioridade=? where idcompromisso=? and idusuario=?");
+
+		statement.setString(1, compromisso.getNome());
+		statement.setString(2, new SimpleDateFormat("yyyy-MM-dd").format(compromisso.getData()));
+		statement.setString(3, compromisso.getHora());
+		statement.setString(4, compromisso.getDescricao());
+		statement.setInt(5, compromisso.getPrioridade());
+		statement.setInt(6, compromisso.getIdCompromisso());
+		statement.setInt(7, compromisso.getUsuario().getIdUsuario());
+		statement.execute();
+
+		connection.close();
+	}
+
+	public void excluir(Compromisso compromisso) throws Exception {
+
+		Connection connection = ConnectionFactory.getConnection();
+
+		PreparedStatement statement = connection
+				.prepareStatement("delete from compromisso where idcompromisso=? and idusuario=?");
+
+		statement.setInt(1, compromisso.getIdCompromisso());
+		statement.setInt(2, compromisso.getUsuario().getIdUsuario());
+		statement.execute();
+
+		connection.close();
+	}
+
+	public List<Compromisso> obterTodos(Integer idUsuario) throws Exception {
+
+		Connection connection = ConnectionFactory.getConnection();
+
+		PreparedStatement statement = connection
+				.prepareStatement("select * from compromisso where idusuario=? order by data desc, hora desc ");
+
+		statement.setInt(1, idUsuario);
+		ResultSet resultSet = statement.executeQuery();
+
+		List<Compromisso> lista = new ArrayList<Compromisso>();
+
+		while (resultSet.next()) {
+
+			Compromisso compromisso = new Compromisso();
+
+			compromisso.setIdCompromisso(resultSet.getInt("idcompromisso"));
+			compromisso.setNome(resultSet.getString("nome"));
+			compromisso.setData(new SimpleDateFormat("yyyy-MM-dd").parse(resultSet.getString("data")));
+			compromisso.setHora(resultSet.getString("hora"));
+			compromisso.setDescricao(resultSet.getString("descricao"));
+			compromisso.setPrioridade(resultSet.getInt("prioridade"));
+
+			lista.add(compromisso);
+
+		}
+
+		connection.close();
+		return lista;
+	}
+
+	public List<Compromisso> obterTodos(Integer idUsuario, Date dataMin, Date dataMax) throws Exception {
+
+		Connection connection = ConnectionFactory.getConnection();
+
+		PreparedStatement statement = connection
+				.prepareStatement("select * from compromisso where idusuario=? and data between ? and ?order by data desc, hora desc ");
+
+		statement.setInt(1, idUsuario);
+		statement.setString(2, new SimpleDateFormat("yyyy-MM-dd").format(dataMin));
+		statement.setString(3, new SimpleDateFormat("yyyy-MM-dd").format(dataMax));
+		
+		ResultSet resultSet = statement.executeQuery();
+
+		List<Compromisso> lista = new ArrayList<Compromisso>();
+
+		while (resultSet.next()) {
+
+			Compromisso compromisso = new Compromisso();
+
+			compromisso.setIdCompromisso(resultSet.getInt("idcompromisso"));
+			compromisso.setNome(resultSet.getString("nome"));
+			compromisso.setData(new SimpleDateFormat("yyyy-MM-dd").parse(resultSet.getString("data")));
+			compromisso.setHora(resultSet.getString("hora"));
+			compromisso.setDescricao(resultSet.getString("descricao"));
+			compromisso.setPrioridade(resultSet.getInt("prioridade"));
+
+			lista.add(compromisso);
+
+		}
+
+		connection.close();
+		return lista;
 
 	}
 
