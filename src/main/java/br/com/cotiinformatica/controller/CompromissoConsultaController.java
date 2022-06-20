@@ -50,15 +50,13 @@ public class CompromissoConsultaController {
 			Date dataMax = new SimpleDateFormat("yyyy-MM-dd").parse(request.getParameter("dataMax"));
 
 			Usuario usuario = (Usuario) request.getSession().getAttribute("usuario_autenticado");
-			
+
 			CompromissoRepository compromissoRepository = new CompromissoRepository();
 			List<Compromisso> lista = compromissoRepository.obterTodos(usuario.getIdUsuario(), dataMin, dataMax);
-			
+
 			modelAndView.addObject("compromissos", lista);
 			modelAndView.addObject("dataMin", request.getParameter("dataMin"));
 			modelAndView.addObject("dataMax", request.getParameter("dataMax"));
-			
-
 
 		} catch (Exception e) {
 			modelAndView.addObject("mensagem_erro", e.getMessage());
@@ -67,4 +65,34 @@ public class CompromissoConsultaController {
 
 		return modelAndView;
 	}
+
+	@RequestMapping(value = "/excluir-compromisso")
+	public ModelAndView excluirCompromisso(Integer id, HttpServletRequest request) {
+
+		ModelAndView modelAndView = new ModelAndView("agenda/consulta");
+
+		try {
+
+			Usuario usuario = (Usuario) request.getSession().getAttribute("usuario_autenticado");
+
+			Compromisso compromisso = new Compromisso();
+			compromisso.setIdCompromisso(id);
+			compromisso.setUsuario(usuario);
+
+			CompromissoRepository compromissoRepository = new CompromissoRepository();
+			compromissoRepository.excluir(compromisso);
+
+			modelAndView.addObject("mensagem_sucesso", "Compromisso excluído com sucesso.");
+
+			List<Compromisso> lista = compromissoRepository.obterTodos(usuario.getIdUsuario());
+			modelAndView.addObject("compromissos", lista);
+
+		} catch (Exception e) {
+			modelAndView.addObject("mensagem_erro", e.getMessage());
+		}
+
+		return modelAndView;
+
+	}
+
 }

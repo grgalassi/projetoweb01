@@ -2,7 +2,7 @@
 	pageEncoding="ISO-8859-1"%>
 
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
-<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
 
 <!DOCTYPE html>
 <html>
@@ -31,12 +31,12 @@
 		<form method="post" action="pesquisar-compromissos">
 			<div class="row">
 				<div class="col-md-2">
-					<input type="date" class="form-control" name="dataMin" value="${dataMin}"
-						required="required" />
+					<input type="date" class="form-control" name="dataMin"
+						value="${dataMin}" required="required" />
 				</div>
 				<div class="col-md-2">
-					<input type="date" class="form-control" name="dataMax" value="${dataMax}"
-						required="required" />
+					<input type="date" class="form-control" name="dataMax"
+						value="${dataMax}" required="required" />
 				</div>
 				<div class="col-md-3">
 					<input type="submit" class="btn btn-success" value="Pesquisar" />
@@ -44,8 +44,12 @@
 			</div>
 		</form>
 
-		<div class="text-danger">
+		<div class="text-danger mt-2">
 			<strong>${mensagem_erro}</strong>
+		</div>
+		
+		<div class="text-success mt-2">
+			<strong>${mensagem_sucesso}</strong>
 		</div>
 
 		<table class="table table-hover table-sm mt-4">
@@ -65,25 +69,23 @@
 
 					<tr>
 						<td>${item.nome}</td>
-						<td>
-							<fmt:formatDate value="${item.data}" pattern="dd/MM/yyyy"/>
+						<td><fmt:formatDate value="${item.data}" pattern="dd/MM/yyyy" />
 						</td>
 						<td>${item.hora}</td>
 						<td>${item.descricao}</td>
-						<td>
-							<c:if test="${item.prioridade == 1}">
+						<td><c:if test="${item.prioridade == 1}">
 								<span class="badge bg-danger">ALTA</span>
-							</c:if>
-							<c:if test="${item.prioridade == 2}">
+							</c:if> <c:if test="${item.prioridade == 2}">
 								<span class="badge bg-warning">MÉDIA</span>
-							</c:if>
-							<c:if test="${item.prioridade == 3}">
+							</c:if> <c:if test="${item.prioridade == 3}">
 								<span class="badge bg-success">BAIXA</span>
-							</c:if>
-
-						</td>
-						<td><a href="#" class="btn btn-primary btn-sm"> Editar </a> <a
-							href="#" class="btn btn-danger btn-sm"> Excluir </a></td>
+							</c:if></td>
+						<td><a
+							href="/projetoweb01/editar-compromissos?id=${item.idCompromisso}"
+							class="btn btn-primary btn-sm"> Editar </a> <a
+							href="/projetoweb01/excluir-compromisso?id=${item.idCompromisso}"
+							onclick="return confirm('Deseja realmente excluir o compromisso?\n${item.nome}');"
+							class="btn btn-danger btn-sm"> Excluir </a></td>
 					</tr>
 
 				</c:forEach>
