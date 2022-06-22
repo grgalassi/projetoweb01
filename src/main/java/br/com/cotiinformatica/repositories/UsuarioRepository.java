@@ -23,6 +23,19 @@ public class UsuarioRepository {
 		connection.close();
 	}
 
+	public void alterarSenha(Integer idUsuario, String novaSenha) throws Exception {
+
+		Connection connection = ConnectionFactory.getConnection();
+
+		PreparedStatement statement = connection
+				.prepareStatement("update usuario set senha = md5(?) where idusuario = ?");
+		statement.setString(1, novaSenha);
+		statement.setInt(2, idUsuario);
+		statement.execute();
+
+		connection.close();
+	}
+
 	public Usuario obterPorEmail(String email) throws Exception {
 
 		Connection connection = ConnectionFactory.getConnection();

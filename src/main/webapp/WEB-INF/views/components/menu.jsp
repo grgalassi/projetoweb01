@@ -23,6 +23,9 @@
 							href="/projetoweb01/consultar-compromissos">Consultar
 								Compromissos</a></li>
 					</ul></li>
+				<li class="nav-item"><a class="nav-link"
+					href="/projetoweb01/configuracoes-usuario">Configurações do
+						Usuário</a></li>
 			</ul>
 
 			<form class="d-flex">
@@ -43,4 +46,3 @@
 		</div>
 	</div>
 </nav>
-
